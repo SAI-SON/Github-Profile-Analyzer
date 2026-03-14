@@ -1,5 +1,5 @@
 import { useCallback, useMemo } from 'react'
-import { BookmarkCheck, BookmarkPlus, Download, Github, Sparkles } from 'lucide-react'
+import { BookmarkCheck, BookmarkPlus, Download, FileSpreadsheet, Github, Sparkles } from 'lucide-react'
 import { motion } from 'framer-motion'
 import SearchBar from '../components/SearchBar'
 import ProfileCard from '../components/ProfileCard'
@@ -7,8 +7,21 @@ import RepoList from '../components/RepoList'
 import LanguageChart from '../components/LanguageChart'
 import StatsCards from '../components/StatsCards'
 import ContributionActivity from '../components/ContributionActivity'
+import AiSummaryCard from '../components/AiSummaryCard'
+import GrowthAnalytics from '../components/GrowthAnalytics'
+import TopicAnalyzer from '../components/TopicAnalyzer'
+import ActivityHeatmap from '../components/ActivityHeatmap'
+import CompareProfiles from '../components/CompareProfiles'
 import { useGithubUser } from '../hooks/useGithubUser'
 import { buildLanguageStats, buildRepoStats } from '../utils/languageStats'
+import {
+  buildHeatmapData,
+  buildRepoGrowthSeries,
+  buildSkillScore,
+  buildTopicStats,
+  generateAiProfileSummary,
+  toCsvRows,
+} from '../utils/advancedAnalytics'
 
 function Home() {
   const {
@@ -29,7 +42,33 @@ function Home() {
   } = useGithubUser('SAI-SON')
 
   const languageData = useMemo(() => buildLanguageStats(repos), [repos])
-  const stats = useMemo(() => buildRepoStats(repos, languageData), [repos, languageData])
+  const baseStats = useMemo(() => buildRepoStats(repos, languageData), [repos, languageData])
+  const developerScore = useMemo(
+    () =>
+      buildSkillScore({
+        repos: baseStats.totalRepos,
+        stars: baseStats.totalStars,
+        followers: user?.followers || 0,
+        languages: languageData.length,
+      }),
+    [baseStats.totalRepos, baseStats.totalStars, languageData.length, user?.followers],
+  )
+
+  const stats = useMemo(
+    () => ({
+      ...baseStats,
+      developerScore,
+    }),
+    [baseStats, developerScore],
+  )
+
+  const aiSummary = useMemo(
+    () => generateAiProfileSummary({ user, repos, languageStats: languageData, events }),
+    [events, languageData, repos, user],
+  )
+  const growthData = useMemo(() => buildRepoGrowthSeries(repos), [repos])
+  const topicStats = useMemo(() => buildTopicStats(repos), [repos])
+  const heatmapData = useMemo(() => buildHeatmapData(events), [events])
 
   const handleSearch = useCallback(
     (value) => {
@@ -113,6 +152,31 @@ function Home() {
     URL.revokeObjectURL(url)
   }, [exportPayload, user?.login])
 
+  const handleExportCsv = useCallback(() => {
+    if (!user?.login || repos.length === 0) {
+      return
+    }
+
+    const csvRows = repos.map((repo) => ({
+      name: repo.name,
+      description: repo.description || '',
+      language: repo.language || 'Unknown',
+      stars: repo.stargazers_count,
+      forks: repo.forks_count,
+      updated_at: repo.updated_at,
+      html_url: repo.html_url,
+    }))
+
+    const csvText = toCsvRows(csvRows)
+    const blob = new Blob([csvText], { type: 'text/csv;charset=utf-8;' })
+    const url = URL.createObjectURL(blob)
+    const link = document.createElement('a')
+    link.href = url
+    link.download = `${user.login}-repositories.csv`
+    link.click()
+    URL.revokeObjectURL(url)
+  }, [repos, user?.login])
+
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
       <motion.header
@@ -161,6 +225,15 @@ function Home() {
             <Download className="h-4 w-4" />
             Export JSON
           </button>
+          <button
+            type="button"
+            onClick={handleExportCsv}
+            disabled={!user || repos.length === 0}
+            className="glass inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white/90 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50 dark:border-cyan-600/60 dark:bg-cyan-500/10 dark:text-cyan-50 dark:hover:border-cyan-400"
+          >
+            <FileSpreadsheet className="h-4 w-4" />
+            Export CSV
+          </button>
         </div>
       </motion.header>
 
@@ -185,12 +258,23 @@ function Home() {
 
         <ProfileCard user={user} loading={loading} />
 
+        <AiSummaryCard summary={aiSummary} score={developerScore} loading={loading} />
+
         <StatsCards stats={stats} loading={loading} />
 
         <div className="grid gap-6 xl:grid-cols-[1.2fr_1fr]">
           <LanguageChart data={languageData} loading={loading} />
           <ContributionActivity events={events} loading={loading} />
         </div>
+
+        <GrowthAnalytics data={growthData} loading={loading} />
+
+        <div className="grid gap-6 xl:grid-cols-[1fr_1.1fr]">
+          <TopicAnalyzer topics={topicStats} loading={loading} />
+          <ActivityHeatmap data={heatmapData} loading={loading} />
+        </div>
+
+        <CompareProfiles primaryUser={user} primaryStats={stats} />
 
         <RepoList repos={repos} loading={loading} />
 

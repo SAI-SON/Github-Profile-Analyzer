@@ -40,6 +40,25 @@ function RepoList({ repos, loading }) {
     return filteredRepos.slice(start, start + PAGE_SIZE)
   }, [currentPage, filteredRepos])
 
+  const trendingRepoIds = useMemo(() => {
+    const byStars = [...repos]
+      .sort((a, b) => b.stargazers_count - a.stargazers_count)
+      .slice(0, 3)
+      .map((repo) => repo.id)
+
+    const byForks = [...repos]
+      .sort((a, b) => b.forks_count - a.forks_count)
+      .slice(0, 3)
+      .map((repo) => repo.id)
+
+    const byUpdated = [...repos]
+      .sort((a, b) => new Date(b.updated_at).getTime() - new Date(a.updated_at).getTime())
+      .slice(0, 3)
+      .map((repo) => repo.id)
+
+    return new Set([...byStars, ...byForks, ...byUpdated])
+  }, [repos])
+
   const handleSortChange = (value) => {
     setSortBy(value)
     setPage(1)
@@ -89,7 +108,7 @@ function RepoList({ repos, loading }) {
         <>
           <div className="grid gap-4 md:grid-cols-2 xl:grid-cols-3">
             {paginatedRepos.map((repo) => (
-              <RepoCard key={repo.id} repo={repo} />
+              <RepoCard key={repo.id} repo={repo} isTrending={trendingRepoIds.has(repo.id)} />
             ))}
           </div>
 

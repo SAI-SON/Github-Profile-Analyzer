@@ -1,14 +1,21 @@
 import { GitFork, Languages, Star } from 'lucide-react'
 import { motion } from 'framer-motion'
 
-function RepoCard({ repo }) {
+function RepoCard({ repo, isTrending }) {
   return (
     <motion.article
       whileHover={{ y: -5, scale: 1.01 }}
       className="glass rounded-2xl border border-slate-200/90 bg-gradient-to-br from-white to-slate-50/80 p-5 dark:border-cyan-900/50 dark:from-slate-900 dark:to-slate-800/80"
     >
       <div className="flex items-start justify-between gap-4">
-        <h3 className="line-clamp-1 text-lg font-semibold text-slate-900 dark:text-cyan-50">{repo.name}</h3>
+        <div className="space-y-1">
+          <h3 className="line-clamp-1 text-lg font-semibold text-slate-900 dark:text-cyan-50">{repo.name}</h3>
+          {isTrending && (
+            <span className="inline-flex items-center rounded-full border border-amber-300 bg-amber-100 px-2 py-0.5 text-[10px] font-bold uppercase tracking-wide text-amber-700 dark:border-amber-700 dark:bg-amber-900/30 dark:text-amber-100">
+              STAR Trending Project
+            </span>
+          )}
+        </div>
         <a
           href={repo.html_url}
           target="_blank"

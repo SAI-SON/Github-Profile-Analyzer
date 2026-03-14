@@ -1,4 +1,4 @@
-import { GitFork, LayoutGrid, Star, Trophy } from 'lucide-react'
+import { Flame, GitFork, LayoutGrid, Star, Trophy } from 'lucide-react'
 import { motion } from 'framer-motion'
 
 const statConfig = [
@@ -26,11 +26,17 @@ const statConfig = [
     icon: Trophy,
     tint: 'from-indigo-50 to-sky-50 dark:from-slate-900 dark:to-slate-800/80',
   },
+  {
+    key: 'developerScore',
+    label: 'Developer score',
+    icon: Flame,
+    tint: 'from-rose-50 to-orange-50 dark:from-slate-900 dark:to-slate-800/80',
+  },
 ]
 
 function StatsCards({ stats, loading }) {
   return (
-    <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+    <section className="grid gap-4 sm:grid-cols-2 xl:grid-cols-5">
       {statConfig.map((item, index) => {
         const Icon = item.icon
 
