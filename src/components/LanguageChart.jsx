@@ -1,6 +1,5 @@
 import {
   Cell,
-  Legend,
   Pie,
   PieChart,
   ResponsiveContainer,
@@ -17,48 +16,67 @@ function LanguageChart({ data, loading }) {
         Distribution of repository languages.
       </p>
 
-      <div className="mt-4 h-72">
+      <div className="mt-4">
         {loading ? (
-          <div className="h-full animate-pulse rounded-2xl border border-slate-200 bg-slate-100/70 dark:border-cyan-900 dark:bg-cyan-900/20" />
+          <div className="h-64 animate-pulse rounded-2xl border border-slate-200 bg-slate-100/70 dark:border-cyan-900 dark:bg-cyan-900/20 sm:h-72" />
         ) : data.length === 0 ? (
-          <div className="flex h-full items-center justify-center rounded-2xl border border-dashed border-slate-300 text-sm text-slate-700 dark:border-cyan-700 dark:text-cyan-200">
+          <div className="flex h-64 items-center justify-center rounded-2xl border border-dashed border-slate-300 text-sm text-slate-700 dark:border-cyan-700 dark:text-cyan-200 sm:h-72">
             No language data available.
           </div>
         ) : (
-          <ResponsiveContainer width="100%" height="100%">
-            <PieChart>
-              <Pie
-                data={data}
-                dataKey="repos"
-                nameKey="name"
-                innerRadius={66}
-                outerRadius={104}
-                paddingAngle={3}
-                animationDuration={750}
-                animationEasing="ease-out"
-              >
-                {data.map((entry, index) => (
-                  <Cell key={`cell-${entry.name}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
-                ))}
-              </Pie>
-              <Tooltip
-                formatter={(value, _, payload) => [`${value} repos`, payload.payload.name]}
-                allowEscapeViewBox={{ x: true, y: true }}
-                wrapperStyle={{ zIndex: 20, outline: 'none' }}
-                contentStyle={{
-                  borderRadius: '12px',
-                  border: '1px solid #0e7490',
-                  background: 'rgba(8, 47, 73, 0.96)',
-                  color: '#e0f2fe',
-                  fontSize: '12px',
-                  boxShadow: '0 10px 24px rgba(2, 6, 23, 0.35)',
-                }}
-                labelStyle={{ color: '#bae6fd', fontWeight: 700 }}
-                itemStyle={{ color: '#e2e8f0', fontWeight: 600 }}
-              />
-              <Legend />
-            </PieChart>
-          </ResponsiveContainer>
+          <>
+            <div className="h-64 sm:h-72">
+              <ResponsiveContainer width="100%" height="100%">
+                <PieChart>
+                  <Pie
+                    data={data}
+                    dataKey="repos"
+                    nameKey="name"
+                    innerRadius="48%"
+                    outerRadius="78%"
+                    paddingAngle={3}
+                    animationDuration={750}
+                    animationEasing="ease-out"
+                  >
+                    {data.map((entry, index) => (
+                      <Cell key={`cell-${entry.name}`} fill={CHART_COLORS[index % CHART_COLORS.length]} />
+                    ))}
+                  </Pie>
+                  <Tooltip
+                    formatter={(value, _, payload) => [`${value} repos`, payload.payload.name]}
+                    allowEscapeViewBox={{ x: true, y: true }}
+                    wrapperStyle={{ zIndex: 20, outline: 'none' }}
+                    contentStyle={{
+                      borderRadius: '12px',
+                      border: '1px solid #0e7490',
+                      background: 'rgba(8, 47, 73, 0.96)',
+                      color: '#e0f2fe',
+                      fontSize: '12px',
+                      boxShadow: '0 10px 24px rgba(2, 6, 23, 0.35)',
+                    }}
+                    labelStyle={{ color: '#bae6fd', fontWeight: 700 }}
+                    itemStyle={{ color: '#e2e8f0', fontWeight: 600 }}
+                  />
+                </PieChart>
+              </ResponsiveContainer>
+            </div>
+
+            <div className="mt-3 flex flex-wrap justify-center gap-x-4 gap-y-2 text-sm sm:text-base">
+              {data.map((entry, index) => (
+                <div
+                  key={`legend-${entry.name}`}
+                  className="inline-flex items-center gap-2 rounded-full border border-cyan-900/30 bg-cyan-950/30 px-3 py-1 text-cyan-100"
+                >
+                  <span
+                    className="inline-block h-3 w-3 rounded-sm"
+                    style={{ backgroundColor: CHART_COLORS[index % CHART_COLORS.length] }}
+                    aria-hidden="true"
+                  />
+                  <span className="leading-none">{entry.name}</span>
+                </div>
+              ))}
+            </div>
+          </>
         )}
       </div>
     </section>

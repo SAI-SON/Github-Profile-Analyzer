@@ -50,7 +50,7 @@ function SearchBar({
           whileTap={{ scale: 0.96 }}
           whileHover={{ scale: 1.02 }}
           type="submit"
-          className="inline-flex items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-sky-600 via-cyan-500 to-emerald-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/25"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-2xl bg-gradient-to-r from-sky-600 via-cyan-500 to-emerald-500 px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-cyan-500/25 sm:w-auto"
         >
           {isLoading ? <LoaderCircle className="h-4 w-4 animate-spin" /> : <Search className="h-4 w-4" />}
           Analyze
@@ -58,7 +58,7 @@ function SearchBar({
       </form>
 
       {recentSearches.length > 0 && (
-        <div className="mt-4 flex flex-wrap items-center gap-2">
+        <div className="mt-4 flex flex-wrap items-center gap-2.5">
           <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-cyan-200">
             <Sparkles className="h-3.5 w-3.5" />
             Recent
@@ -77,7 +77,7 @@ function SearchBar({
       )}
 
       {favoriteProfiles.length > 0 && (
-        <div className="mt-3 flex flex-wrap items-center gap-2">
+        <div className="mt-3 flex flex-wrap items-center gap-2.5">
           <span className="inline-flex items-center gap-1 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:text-cyan-200">
             <Bookmark className="h-3.5 w-3.5" />
             Favorites

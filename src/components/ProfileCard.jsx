@@ -65,7 +65,7 @@ function ProfileCard({ user, loading }) {
           href={user.html_url}
           target="_blank"
           rel="noreferrer"
-          className="ml-auto inline-flex items-center gap-2 rounded-full bg-gradient-to-r from-sky-700 to-cyan-600 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:brightness-105 dark:bg-cyan-400 dark:text-cyan-950 dark:hover:bg-cyan-300"
+          className="inline-flex w-full items-center justify-center gap-2 rounded-full bg-gradient-to-r from-sky-700 to-cyan-600 px-4 py-2 text-xs font-semibold uppercase tracking-wide text-white transition hover:brightness-105 dark:bg-cyan-400 dark:text-cyan-950 dark:hover:bg-cyan-300 sm:ml-auto sm:w-auto"
         >
           Open profile <ExternalLink className="h-3.5 w-3.5" />
         </a>

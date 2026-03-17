@@ -198,12 +198,12 @@ function Home() {
           </p>
         </div>
 
-        <div className="flex items-center gap-3">
+        <div className="grid w-full grid-cols-2 gap-2 sm:w-auto sm:grid-cols-none sm:flex sm:flex-wrap sm:items-center sm:justify-end sm:gap-3">
           <a
             href="https://github.com"
             target="_blank"
             rel="noreferrer"
-            className="glass inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white/90 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-lg dark:border-cyan-600/60 dark:bg-cyan-500/10 dark:text-cyan-50 dark:hover:border-cyan-400"
+            className="glass inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-slate-300/80 bg-white/90 px-4 py-2 text-xs font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-lg dark:border-cyan-600/60 dark:bg-cyan-500/10 dark:text-cyan-50 dark:hover:border-cyan-400 sm:w-auto sm:text-sm"
           >
             <Github className="h-4 w-4" />
             GitHub
@@ -211,7 +211,7 @@ function Home() {
           <button
             type="button"
             onClick={handleToggleFavorite}
-            className="glass inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white/90 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-lg dark:border-cyan-600/60 dark:bg-cyan-500/10 dark:text-cyan-50 dark:hover:border-cyan-400"
+            className="glass inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-slate-300/80 bg-white/90 px-4 py-2 text-xs font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-lg dark:border-cyan-600/60 dark:bg-cyan-500/10 dark:text-cyan-50 dark:hover:border-cyan-400 sm:w-auto sm:text-sm"
           >
             {isFavorite ? <BookmarkCheck className="h-4 w-4" /> : <BookmarkPlus className="h-4 w-4" />}
             {isFavorite ? 'Saved' : 'Save profile'}
@@ -220,7 +220,7 @@ function Home() {
             type="button"
             onClick={handleExportInsights}
             disabled={!exportPayload}
-            className="glass inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white/90 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50 dark:border-cyan-600/60 dark:bg-cyan-500/10 dark:text-cyan-50 dark:hover:border-cyan-400"
+            className="glass inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-slate-300/80 bg-white/90 px-4 py-2 text-xs font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50 dark:border-cyan-600/60 dark:bg-cyan-500/10 dark:text-cyan-50 dark:hover:border-cyan-400 sm:w-auto sm:text-sm"
           >
             <Download className="h-4 w-4" />
             Export JSON
@@ -229,7 +229,7 @@ function Home() {
             type="button"
             onClick={handleExportCsv}
             disabled={!user || repos.length === 0}
-            className="glass inline-flex items-center gap-2 rounded-full border border-slate-300/80 bg-white/90 px-4 py-2 text-sm font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50 dark:border-cyan-600/60 dark:bg-cyan-500/10 dark:text-cyan-50 dark:hover:border-cyan-400"
+            className="glass inline-flex w-full items-center justify-center gap-2 whitespace-nowrap rounded-full border border-slate-300/80 bg-white/90 px-4 py-2 text-xs font-semibold text-slate-700 transition hover:-translate-y-0.5 hover:bg-white hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-50 dark:border-cyan-600/60 dark:bg-cyan-500/10 dark:text-cyan-50 dark:hover:border-cyan-400 sm:w-auto sm:text-sm"
           >
             <FileSpreadsheet className="h-4 w-4" />
             Export CSV
