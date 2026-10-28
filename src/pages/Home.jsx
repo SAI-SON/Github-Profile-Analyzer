@@ -150,7 +150,7 @@ function Home() {
     link.download = `${user.login}-github-insights.json`
     link.click()
     URL.revokeObjectURL(url)
-  }, [exportPayload, user?.login])
+  }, [exportPayload, user])
 
   const handleExportCsv = useCallback(() => {
     if (!user?.login || repos.length === 0) {
@@ -175,7 +175,7 @@ function Home() {
     link.download = `${user.login}-repositories.csv`
     link.click()
     URL.revokeObjectURL(url)
-  }, [repos, user?.login])
+  }, [repos, user])
 
   return (
     <main className="mx-auto w-full max-w-7xl px-4 py-6 sm:px-6 lg:px-8 lg:py-10">
